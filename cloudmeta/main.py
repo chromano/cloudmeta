@@ -3,6 +3,7 @@ from datetime import datetime
 from io import BytesIO
 import time
 
+import botocore.exceptions
 from PIL import Image
 from PIL.ExifTags import TAGS
 
@@ -28,7 +29,12 @@ def extract_exif(fname, contents):
     It doesn't return any tags if the file format can't be determined
     from the given contents.
     """
-    _file = yield from contents
+    try:
+        _file = yield from contents
+    except botocore.exceptions.ClientError as err:
+        print("[{}] FAILED TO IMPORT ({}): {}".format(
+            datetime.now(), err, fname))
+        return
     body = _file['Body']
     t0 = time.time()
     while True:
