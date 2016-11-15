@@ -13,6 +13,8 @@ def import_metadata(db, path, filename, tags):
     """Import the given filename and tags into the given database.
     """
     tags = yield from tags
+    if not tags:
+        return
     _file = '{}/{}'.format(path, filename)
     print("[{}] IMPORTED: {}".format(datetime.now(), filename))
     yield from db.upsert(('file',), {
