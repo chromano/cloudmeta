@@ -1,10 +1,8 @@
-=========
 CloudMeta
 =========
 
 A small utility for keeping track of metadata associated with images stored at a cloud storage, such as Amazon S3.
 
-------------
 Installation
 ------------
 
@@ -14,8 +12,6 @@ Checkout the repository and run the following command inside the directory creat
 
 The `cloudmeta` command should now be available in your search path. 
 
-
------
 Usage
 -----
 
