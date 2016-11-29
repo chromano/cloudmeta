@@ -23,13 +23,17 @@ class MongoDB(AbstractDB):
         # A normalization of keys is necessary, since MongoDB won't allow
         # records with keys in a data type other than strings.
         def _normalize_keys(d):
+            result = {}
             for key in d.keys():
                 value = d[key]
                 if not isinstance(key, str):
-                    d[str(key)] = d.pop(key)
+                    key = str(key)
                 if isinstance(value, dict):
-                    _normalize_keys(value)
-        _normalize_keys(record)
+                    result[key] = _normalize_keys(value)
+                else:
+                    result[key] = value
+            return result
+        record = _normalize_keys(record)
 
         yield from self.coll.update_one(
                 uniques, {'$set': record}, upsert=True)
